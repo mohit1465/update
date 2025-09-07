@@ -5,6 +5,15 @@ const path = require('path');
 
 // Configure logging
 log.transports.file.level = 'info';
+log.info('App starting...');
+
+// Enable auto-update in development
+if (process.env.NODE_ENV === 'development') {
+  log.info('Running in development mode');
+  autoUpdater.updateConfigPath = path.join(__dirname, 'dev-app-update.yml');
+  autoUpdater.forceDevUpdateConfig = true;
+}
+
 autoUpdater.logger = log;
 autoUpdater.autoDownload = true;
 autoUpdater.autoInstallOnAppQuit = true;
