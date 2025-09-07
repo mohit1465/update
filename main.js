@@ -67,32 +67,59 @@ app.on('activate', function () {
 
 // Auto-updater events
 autoUpdater.on('checking-for-update', () => {
-  log.info('Checking for update...');  mainWindow.webContents.send('update-message', 'Checking for update...');
+  log.info('Checking for update...');
+  if (mainWindow) {
+    mainWindow.webContents.send('update-message', 'Checking for update...');
+  }
 });
 
 autoUpdater.on('update-available', (info) => {
-  log.info('Update available.');  mainWindow.webContents.send('update-message', 'Update available. Downloading...');
+  log.info('Update available:', info);
+  if (mainWindow) {
+    mainWindow.webContents.send('update-message', 'Update available. Downloading...');
+  }
+  // Auto download the update
+  autoUpdater.downloadUpdate().catch(err => {
+    log.error('Error downloading update:', err);
+    if (mainWindow) {
+      mainWindow.webContents.send('update-message', 'Error downloading update: ' + err.message);
+    }
+  });
 });
 
 autoUpdater.on('update-not-available', (info) => {
-  log.info('No update available.');  mainWindow.webContents.send('update-message', 'No update available.');
+  log.info('No update available.');
+  if (mainWindow) {
+    mainWindow.webContents.send('update-message', 'No update available.');
+  }
 });
 
 autoUpdater.on('error', (err) => {
-  log.error('Error in auto-updater: ' + err);  mainWindow.webContents.send('update-message', 'Error in auto-updater: ' + err);
+  log.error('Error in auto-updater:', err);
+  if (mainWindow) {
+    mainWindow.webContents.send('update-message', 'Error in auto-updater: ' + (err.message || err));
+  }
 });
 
 autoUpdater.on('download-progress', (progressObj) => {
   let log_message = 'Download speed: ' + Math.round(progressObj.bytesPerSecond / 1000) + ' KB/s';
   log_message = log_message + ' - Downloaded ' + progressObj.percent + '%';
   log_message = log_message + ' (' + progressObj.transferred + '/' + progressObj.total + ')';
-  log.info(log_message);  mainWindow.webContents.send('update-progress', progressObj.percent);
+  log.info(log_message);
+  if (mainWindow) {
+    mainWindow.webContents.send('update-progress', progressObj.percent);
+  }
 });
 
 autoUpdater.on('update-downloaded', (info) => {
-  log.info('Update downloaded');  mainWindow.webContents.send('update-downloaded');
+  log.info('Update downloaded:', info);
+  if (mainWindow) {
+    mainWindow.webContents.send('update-downloaded');
+  }
   // Auto install the update
-  autoUpdater.quitAndInstall();
+  setTimeout(() => {
+    autoUpdater.quitAndInstall();
+  }, 1000);
 });
 
 // IPC handlers for renderer process

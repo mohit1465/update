@@ -6,7 +6,9 @@
   "scripts": {
     "start": "set NODE_ENV=development && electron .",
     "build": "electron-builder",
-    "publish": "electron-builder -p always"
+    "build:win": "electron-builder --win",
+    "publish": "electron-builder -p always",
+    "release": "electron-builder --publish always"
   },
   "author": "",
   "license": "ISC",
