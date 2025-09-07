@@ -44,15 +44,33 @@ function createWindow() {
   mainWindow.on('closed', function () {
     mainWindow = null;
   });
-
-  // Check for updates when the app is ready
-  autoUpdater.checkForUpdatesAndNotify();
 }
 
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+  createWindow();
+  
+  // Check for updates after a short delay to ensure the window is ready
+  setTimeout(() => {
+    console.log('Checking for updates...');
+    autoUpdater.checkForUpdates()
+      .then(result => {
+        console.log('Update check result:', result);
+        if (result && result.downloadPromise) {
+          return result.downloadPromise;
+        }
+        return null;
+      })
+      .catch(err => {
+        console.error('Error checking for updates:', err);
+        if (mainWindow) {
+          mainWindow.webContents.send('update-message', 'Error checking for updates: ' + (err.message || err));
+        }
+      });
+  }, 1000);
+});
 
 // Quit when all windows are closed, except on macOS.
 app.on('window-all-closed', function () {
@@ -68,6 +86,7 @@ app.on('activate', function () {
 // Auto-updater events
 autoUpdater.on('checking-for-update', () => {
   log.info('Checking for update...');
+  console.log('Checking for update...');
   if (mainWindow) {
     mainWindow.webContents.send('update-message', 'Checking for update...');
   }
@@ -75,14 +94,17 @@ autoUpdater.on('checking-for-update', () => {
 
 autoUpdater.on('update-available', (info) => {
   log.info('Update available:', info);
+  console.log('Update available:', info);
   if (mainWindow) {
-    mainWindow.webContents.send('update-message', 'Update available. Downloading...');
+    mainWindow.webContents.send('update-message', `Update available: ${info.version}. Downloading...`);
   }
   // Auto download the update
   autoUpdater.downloadUpdate().catch(err => {
-    log.error('Error downloading update:', err);
+    const errorMsg = `Error downloading update: ${err.message || err}`;
+    log.error(errorMsg);
+    console.error(errorMsg);
     if (mainWindow) {
-      mainWindow.webContents.send('update-message', 'Error downloading update: ' + err.message);
+      mainWindow.webContents.send('update-message', errorMsg);
     }
   });
 });
@@ -95,9 +117,25 @@ autoUpdater.on('update-not-available', (info) => {
 });
 
 autoUpdater.on('error', (err) => {
-  log.error('Error in auto-updater:', err);
+  const errorMsg = `Error in auto-updater: ${err.message || err}`;
+  log.error(errorMsg);
+  console.error(errorMsg);
   if (mainWindow) {
-    mainWindow.webContents.send('update-message', 'Error in auto-updater: ' + (err.message || err));
+    mainWindow.webContents.send('update-message', errorMsg);
+  }
+  
+  // Try to get more detailed error information
+  if (err.stack) {
+    console.error('Error stack:', err.stack);
+  }
+  
+  // If it's a network error, provide more specific guidance
+  if (err.message && (err.message.includes('net') || err.message.includes('network'))) {
+    const networkErrorMsg = 'Network error occurred while checking for updates. Please check your internet connection.';
+    console.error(networkErrorMsg);
+    if (mainWindow) {
+      mainWindow.webContents.send('update-message', networkErrorMsg);
+    }
   }
 });
 

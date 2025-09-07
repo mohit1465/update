@@ -1,4 +1,5 @@
 owner: mohit1465
 repo: update
 provider: github
-updateInterval: 10s
+publishAutoUpdate: true
+updaterCacheDirName: "electron-auto-update-app"

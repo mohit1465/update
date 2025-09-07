@@ -11,6 +11,10 @@
   },
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohit1465/update.git"
+  },
   "build": {
     "appId": "com.electron.autoupdateapp",
     "productName": "Auto Update App",
