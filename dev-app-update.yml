@@ -4,9 +4,14 @@ provider: github
 publishAutoUpdate: true
 updaterCacheDirName: "electron-auto-update-app"
 updaterFullChangelog: true
-updaterCacheDirName: "electron-auto-update-app"
+
+# Update configuration to match the new naming pattern
 updaterConfig: {
   "provider": "github",
   "owner": "mohit1465",
-  "repo": "update"
+  "repo": "update",
+  "releaseType": "release"
 }
+
+# Set the correct artifact name pattern
+artifactName: "electron-auto-update-app.Setup.${version}.exe"

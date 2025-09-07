@@ -19,7 +19,14 @@
   "build": {
     "extends": null,
     "win": {
-      "target": "nsis"
+      "target": "nsis",
+      "artifactName": "${productName}.Setup.${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "runAfterFinish": true
     },
     "publish": ["github"]
   },
