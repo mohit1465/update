@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Icon Generator</title>
+</head>
+<body>
+    <h1>PWA Icon Generator</h1>
+    <p>This will generate basic icons for the mobile browser PWA.</p>
+    <button onclick="generateIcons()">Generate Icons</button>
+    <div id="output"></div>
+
+    <script>
+        function generateIcons() {
+            const sizes = [72, 96, 128, 144, 152, 192, 384, 512];
+            const output = document.getElementById('output');
+            
+            sizes.forEach(size => {
+                const canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                const ctx = canvas.getContext('2d');
+                
+                // Background
+                ctx.fillStyle = '#1f2833';
+                ctx.fillRect(0, 0, size, size);
+                
+                // Border
+                ctx.strokeStyle = '#66fcf1';
+                ctx.lineWidth = size * 0.05;
+                ctx.strokeRect(size * 0.1, size * 0.1, size * 0.8, size * 0.8);
+                
+                // Browser icon (simplified)
+                ctx.fillStyle = '#66fcf1';
+                ctx.fillRect(size * 0.2, size * 0.25, size * 0.6, size * 0.5);
+                
+                // Address bar
+                ctx.fillStyle = '#0b0c10';
+                ctx.fillRect(size * 0.25, size * 0.3, size * 0.5, size * 0.1);
+                
+                // Navigation dots
+                const dotSize = size * 0.08;
+                ctx.fillStyle = '#66fcf1';
+                ctx.beginPath();
+                ctx.arc(size * 0.3, size * 0.45, dotSize, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(size * 0.5, size * 0.45, dotSize, 0, 2 * Math.PI);
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(size * 0.7, size * 0.45, dotSize, 0, 2 * Math.PI);
+                ctx.fill();
+                
+                // Convert to blob and download
+                canvas.toBlob(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `icon-${size}x${size}.png`;
+                    a.click();
+                    URL.revokeObjectURL(url);
+                });
+                
+                output.appendChild(canvas);
+            });
+        }
+    </script>
+</body>
+</html>
