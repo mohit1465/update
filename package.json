@@ -16,21 +16,11 @@
     "url": "https://github.com/mohit1465/update.git"
   },
   "build": {
-    "appId": "com.electron.autoupdateapp",
-    "productName": "AutoUpdateApp",
+    "extends": null,
     "win": {
-      "target": ["nsis"],
-      "publish": ["github"]
+      "target": "nsis"
     },
-    "nsis": {
-      "oneClick": false,
-      "allowToChangeInstallationDirectory": true
-    },
-    "publish": {
-      "provider": "github",
-      "owner": "mohit1465",
-      "repo": "update"
-    }
+    "publish": ["github"]
   },
   "devDependencies": {
     "electron": "^38.0.0",
