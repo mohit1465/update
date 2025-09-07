@@ -3,3 +3,10 @@ repo: update
 provider: github
 publishAutoUpdate: true
 updaterCacheDirName: "electron-auto-update-app"
+updaterFullChangelog: true
+updaterCacheDirName: "electron-auto-update-app"
+updaterConfig: {
+  "provider": "github",
+  "owner": "mohit1465",
+  "repo": "update"
+}

@@ -1,7 +1,7 @@
 appId: com.electron.autoupdateapp
 productName: electron-auto-update-app
 copyright: Copyright © 2023
-artifactName: "${productName}.Setup.${version}.${ext}"
+artifactName: "${name}.Setup.${version}.${ext}"
 directories:
   output: dist
   buildResources: build
