@@ -1,0 +1,53 @@
+{
+  "name": "electron-auto-update-app",
+  "version": "1.0.0",
+  "description": "Electron app with auto-update functionality",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-builder",
+    "publish": "electron-builder -p always"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohit1465/update.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^28.1.0",
+    "electron-builder": "^24.9.1",
+    "electron-notarize": "^1.2.2",
+    "electron-updater": "^6.1.7"
+  },
+  "dependencies": {
+    "electron-log": "^5.0.1"
+  },
+  "build": {
+    "appId": "com.electron.autoupdateapp",
+    "productName": "Auto Update App",
+    "copyright": "Copyright 2025",
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "mohit1465",
+        "repo": "update"
+      }
+    ],
+    "win": {
+      "target": "nsis"
+    },
+    "mac": {
+      "category": "public.app-category.utilities",
+      "target": "dmg"
+    },
+    "linux": {
+      "target": "AppImage"
+    }
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/mohit1465/update/issues"
+  },
+  "homepage": "https://github.com/mohit1465/update#readme"
+}
