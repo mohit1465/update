@@ -1,6 +1,6 @@
 {
   "name": "electron-auto-update-app",
-  "version": "1.4.3",
+  "version": "1.5.3",
   "description": "Electron app with auto-update functionality",
   "productName": "electron-auto-update-app",
   "main": "main.js",
