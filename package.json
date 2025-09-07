@@ -17,9 +17,19 @@
   },
   "build": {
     "appId": "com.electron.autoupdateapp",
-    "productName": "Auto Update App",
+    "productName": "AutoUpdateApp",
     "win": {
-      "target": "nsis"
+      "target": ["nsis"],
+      "publish": ["github"]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "publish": {
+      "provider": "github",
+      "owner": "mohit1465",
+      "repo": "update"
     }
   },
   "devDependencies": {
